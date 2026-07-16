@@ -10,12 +10,57 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+// Image compression function
+async function compressImage(file: File, maxWidth: number = 1200, quality: number = 0.8): Promise<File> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg",
+              });
+              resolve(compressedFile);
+            } else {
+              reject(new Error("Compression failed"));
+            }
+          },
+          "image/jpeg",
+          quality
+        );
+      };
+      img.onerror = reject;
+    };
+    reader.onerror = reject;
+  });
+}
+
 export default function NewCar() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [images, setImages] = useState<File[]>([]);
   const [video, setVideo] = useState<File | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [compressing, setCompressing] = useState(false);
   
   const [formData, setFormData] = useState({
     brand: "",
@@ -37,13 +82,24 @@ export default function NewCar() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length + images.length > 9) {
       alert("Maximum 9 images allowed");
       return;
     }
-    setImages([...images, ...files]);
+    
+    setCompressing(true);
+    try {
+      const compressedFiles = await Promise.all(
+        files.map(file => compressImage(file, 1200, 0.8))
+      );
+      setImages([...images, ...compressedFiles]);
+    } catch (error) {
+      alert("Error compressing images. Please try again.");
+    } finally {
+      setCompressing(false);
+    }
   };
 
   const removeImage = (index: number) => setImages(images.filter((_, i) => i !== index));
@@ -78,7 +134,7 @@ export default function NewCar() {
       const carId = crypto.randomUUID();
       const imageUrls = [];
       for (let i = 0; i < images.length; i++) {
-        const ext = images[i].name.split(".").pop();
+        const ext = "jpg"; // Always jpg after compression
         const url = await uploadToSupabase(images[i], `cars/${carId}/image_${i + 1}.${ext}`);
         imageUrls.push(url);
       }
@@ -150,23 +206,35 @@ export default function NewCar() {
           <div style={{ marginTop: "20px" }}><label style={{ fontSize: "13px", color: "#ccc", marginBottom: "8px", display: "block" }}>Description</label><textarea name="description" rows={4} value={formData.description} onChange={handleChange} style={{ width: "100%", padding: "12px", background: "#111", border: "1px solid #222", borderRadius: "8px", color: "#fff", resize: "vertical" }} /></div>
           <div style={{ marginTop: "20px" }}><label style={{ fontSize: "13px", color: "#ccc", marginBottom: "8px", display: "block" }}>Features (comma separated)</label><input type="text" name="features" placeholder="ABS, Airbags, Sunroof, Backup Camera" value={formData.features} onChange={handleChange} style={{ width: "100%", padding: "12px", background: "#111", border: "1px solid #222", borderRadius: "8px", color: "#fff" }} /></div>
 
-          {/* Images Upload */}
+          {/* Images Upload with Compression */}
           <div style={{ marginTop: "24px" }}>
-            <label style={{ fontSize: "13px", color: "#ccc", marginBottom: "8px", display: "block" }}>Images (up to 9) - Drag to reorder</label>
-            <input type="file" multiple accept="image/*" onChange={handleImageUpload} style={{ width: "100%", padding: "12px", background: "#111", border: "1px solid #222", borderRadius: "8px", color: "#fff" }} />
-            <p style={{ color: "#666", fontSize: "12px", marginTop: "4px" }}>{images.length} / 9 images selected</p>
+            <label style={{ fontSize: "13px", color: "#ccc", marginBottom: "8px", display: "block" }}>
+              Images (up to 9) - Drag to reorder {compressing && <span style={{ color: "#ffd700" }}>⏳ Compressing...</span>}
+            </label>
+            <input 
+              type="file" 
+              multiple 
+              accept="image/*" 
+              onChange={handleImageUpload} 
+              disabled={compressing}
+              style={{ width: "100%", padding: "12px", background: "#111", border: "1px solid #222", borderRadius: "8px", color: "#fff" }} 
+            />
+            <p style={{ color: "#666", fontSize: "12px", marginTop: "4px" }}>
+              {images.length} / 9 images selected {images.length > 0 && `(Compressed to ~1200px width)`}
+            </p>
             {images.length > 0 && (
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "12px" }}>
                 {images.map((img, idx) => (
                   <div key={idx} draggable onDragStart={() => handleDragStart(idx)} onDragOver={(e) => handleDragOver(e, idx)} onDragEnd={handleDragEnd} style={{ position: "relative", cursor: "grab", opacity: draggedIndex === idx ? 0.5 : 1 }}>
                     <img src={URL.createObjectURL(img)} style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "8px" }} />
                     <div style={{ position: "absolute", top: "4px", left: "4px", background: "rgba(0,0,0,0.7)", borderRadius: "4px", padding: "2px 6px", fontSize: "11px", color: "#ffd700" }}>{idx + 1}</div>
+                    <div style={{ position: "absolute", bottom: "4px", left: "4px", background: "rgba(0,0,0,0.5)", borderRadius: "4px", padding: "1px 6px", fontSize: "9px", color: "#888" }}>{(img.size / 1024).toFixed(0)}KB</div>
                     <button type="button" onClick={() => removeImage(idx)} style={{ position: "absolute", top: "-8px", right: "-8px", width: "24px", height: "24px", background: "#ff3b30", border: "none", borderRadius: "50%", color: "white", cursor: "pointer" }}>×</button>
                   </div>
                 ))}
               </div>
             )}
-            <p style={{ color: "#666", fontSize: "11px", marginTop: "8px" }}>💡 Tip: Drag images to reorder. The first image will be the main photo.</p>
+            <p style={{ color: "#666", fontSize: "11px", marginTop: "8px" }}>💡 Images are automatically compressed to ~1200px width for faster loading</p>
           </div>
 
           {/* Video Upload */}
@@ -177,7 +245,13 @@ export default function NewCar() {
           </div>
 
           <div style={{ marginTop: "32px" }}>
-            <button type="submit" disabled={loading} style={{ padding: "14px 32px", background: loading ? "#666" : "#ffd700", border: "none", borderRadius: "8px", color: "#000", fontSize: "14px", fontWeight: "500", cursor: loading ? "not-allowed" : "pointer" }}>{loading ? "Adding..." : "Add Car"}</button>
+            <button 
+              type="submit" 
+              disabled={loading} 
+              style={{ padding: "14px 32px", background: loading ? "#666" : "#ffd700", border: "none", borderRadius: "8px", color: "#000", fontSize: "14px", fontWeight: "500", cursor: loading ? "not-allowed" : "pointer" }}
+            >
+              {loading ? "Adding..." : "Add Car"}
+            </button>
           </div>
         </form>
       </div>

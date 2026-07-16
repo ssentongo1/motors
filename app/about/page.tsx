@@ -1,10 +1,29 @@
 "use client";
 
 import { useState } from "react";
+import {
+  Award,
+  Shield,
+  Truck,
+  ThumbsUp,
+  MapPin,
+  Phone,
+  Mail,
+  MessageCircle,
+  Clock,
+  CheckCircle,
+  Globe,
+  ShoppingBag,
+  Car,
+  Sparkles,
+  Users,
+} from "lucide-react";
 
 export default function AboutPage() {
+  const [loading, setLoading] = useState(false);
+
   return (
-    <div>
+    <div suppressHydrationWarning>
       <style>{`
         .about-section {
           margin-bottom: 48px;
@@ -43,7 +62,6 @@ export default function AboutPage() {
           transform: translateY(-4px);
         }
         .info-icon {
-          font-size: 32px;
           margin-bottom: 16px;
         }
         .info-title {
@@ -75,7 +93,7 @@ export default function AboutPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 20px;
+          color: #ffd700;
         }
         .contact-text {
           flex: 1;
@@ -108,141 +126,219 @@ export default function AboutPage() {
           .info-card {
             padding: 20px;
           }
+          .info-grid {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
 
       {/* Hero Section */}
-      <div className="about-section">
-        <h1 className="about-title">
-          About <span>Motors</span>
+      <div className="about-section" suppressHydrationWarning>
+        <h1 className="about-title" suppressHydrationWarning>
+          About <span>Kapyaata</span>
         </h1>
-        <p className="about-text">
-          Founded in 2024, Motors has established itself as a premier destination for luxury and 
-          performance vehicles. Our commitment to excellence, transparency, and customer satisfaction 
-          sets us apart in the automotive industry.
+        <p className="about-text" suppressHydrationWarning>
+          Welcome to <strong>Kapyaata</strong>, your trusted partner in the automotive industry across East Africa. 
+          We specialize in providing premium vehicles, genuine spare parts, and top-quality car accessories 
+          sourced from around the world.
         </p>
-        <p className="about-text">
-          We believe that buying a car should be an exciting and seamless experience. That's why 
-          we've built a platform that combines cutting-edge technology with genuine expertise, 
-          offering you access to the finest vehicles from around the world.
+        <p className="about-text" suppressHydrationWarning>
+          Whether you're looking for a brand-new luxury car, a reliable used vehicle, or need help importing 
+          your dream car from any part of the globe, Kapyaata is here to make it happen. We serve customers 
+          across Uganda, Kenya, Tanzania, Rwanda, and the entire East African region.
         </p>
       </div>
 
-      {/* Mission & Values */}
-      <div className="about-section">
-        <h2 className="about-title" style={{ fontSize: "22px" }}>
+      {/* Mission Section */}
+      <div className="about-section" suppressHydrationWarning>
+        <h2 className="about-title" style={{ fontSize: "22px" }} suppressHydrationWarning>
           Our <span>Mission</span>
         </h2>
-        <p className="about-text">
-          To provide an unparalleled car buying experience by offering premium vehicles, 
-          transparent pricing, and exceptional service. We strive to connect car enthusiasts 
-          with their dream cars while maintaining the highest standards of integrity and professionalism.
+        <p className="about-text" suppressHydrationWarning>
+          To connect East Africans with the world's finest vehicles, parts, and accessories through a 
+          seamless, transparent, and customer-first experience. We're redefining how people buy cars 
+          and auto products in the region.
         </p>
       </div>
 
-      {/* Key Information Grid */}
-      <div className="info-grid">
-        <div className="info-card">
-          <div className="info-icon">🏆</div>
-          <h3 className="info-title">Quality Assurance</h3>
-          <p className="info-detail">Every vehicle undergoes rigorous inspection to ensure it meets our premium standards before being listed.</p>
+      {/* What We Offer */}
+      <div className="about-section" suppressHydrationWarning>
+        <h2 className="about-title" style={{ fontSize: "22px" }} suppressHydrationWarning>
+          What <span>We Offer</span>
+        </h2>
+        <div className="info-grid" suppressHydrationWarning>
+          <div className="info-card" suppressHydrationWarning>
+            <div className="info-icon" suppressHydrationWarning>
+              <Car size={32} color="#ffd700" />
+            </div>
+            <h3 className="info-title" suppressHydrationWarning>New & Used Cars</h3>
+            <p className="info-detail" suppressHydrationWarning>
+              Premium brand-new and quality-tested used vehicles sourced from trusted dealers worldwide.
+            </p>
+          </div>
+          <div className="info-card" suppressHydrationWarning>
+            <div className="info-icon" suppressHydrationWarning>
+              <Globe size={32} color="#ffd700" />
+            </div>
+            <h3 className="info-title" suppressHydrationWarning>Car Importation</h3>
+            <p className="info-detail" suppressHydrationWarning>
+              We help you import any car from any country with full logistics, customs clearance, and delivery.
+            </p>
+          </div>
+          <div className="info-card" suppressHydrationWarning>
+            <div className="info-icon" suppressHydrationWarning>
+              <ShoppingBag size={32} color="#ffd700" />
+            </div>
+            <h3 className="info-title" suppressHydrationWarning>Spare Parts</h3>
+            <p className="info-detail" suppressHydrationWarning>
+              Genuine spare parts for all makes and models, sourced from manufacturers across the globe.
+            </p>
+          </div>
+          <div className="info-card" suppressHydrationWarning>
+            <div className="info-icon" suppressHydrationWarning>
+              <Sparkles size={32} color="#ffd700" />
+            </div>
+            <h3 className="info-title" suppressHydrationWarning>Car Accessories</h3>
+            <p className="info-detail" suppressHydrationWarning>
+              Premium accessories from international brands to customize your vehicle to perfection.
+            </p>
+          </div>
         </div>
-        <div className="info-card">
-          <div className="info-icon">🔒</div>
-          <h3 className="info-title">Secure Transactions</h3>
-          <p className="info-detail">Your security is our priority. All transactions are protected with industry-standard encryption.</p>
-        </div>
-        <div className="info-card">
-          <div className="info-icon">🚚</div>
-          <h3 className="info-title">Worldwide Delivery</h3>
-          <p className="info-detail">We offer secure shipping options to deliver your vehicle anywhere in the world.</p>
-        </div>
-        <div className="info-card">
-          <div className="info-icon">💯</div>
-          <h3 className="info-title">Satisfaction Guaranteed</h3>
-          <p className="info-detail">Our team is dedicated to ensuring you drive away with complete peace of mind.</p>
+      </div>
+
+      {/* Why Choose Us */}
+      <div className="about-section" suppressHydrationWarning>
+        <h2 className="about-title" style={{ fontSize: "22px" }} suppressHydrationWarning>
+          Why Choose <span>Kapyaata</span>
+        </h2>
+        <div className="info-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }} suppressHydrationWarning>
+          <div className="info-card" suppressHydrationWarning>
+            <div className="info-icon" suppressHydrationWarning>
+              <Award size={32} color="#ffd700" />
+            </div>
+            <h3 className="info-title" suppressHydrationWarning>Trusted & Certified</h3>
+            <p className="info-detail" suppressHydrationWarning>
+              Serving East Africa with integrity and excellence for over 1 year.
+            </p>
+          </div>
+          <div className="info-card" suppressHydrationWarning>
+            <div className="info-icon" suppressHydrationWarning>
+              <Shield size={32} color="#ffd700" />
+            </div>
+            <h3 className="info-title" suppressHydrationWarning>Secure Transactions</h3>
+            <p className="info-detail" suppressHydrationWarning>
+              All your transactions are protected with industry-leading security standards.
+            </p>
+          </div>
+          <div className="info-card" suppressHydrationWarning>
+            <div className="info-icon" suppressHydrationWarning>
+              <Users size={32} color="#ffd700" />
+            </div>
+            <h3 className="info-title" suppressHydrationWarning>Customer First</h3>
+            <p className="info-detail" suppressHydrationWarning>
+              We put our customers at the heart of everything we do. Your satisfaction is our priority.
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Contact Information */}
-      <div className="about-section">
-        <h2 className="about-title" style={{ fontSize: "22px" }}>
+      <div className="about-section" suppressHydrationWarning>
+        <h2 className="about-title" style={{ fontSize: "22px" }} suppressHydrationWarning>
           Contact <span>Us</span>
         </h2>
         
-        <div className="info-grid" style={{ gridTemplateColumns: "1fr 1fr" }}>
-          {/* Left Column - Contact Details */}
-          <div className="info-card">
-            <h3 className="info-title" style={{ fontSize: "16px", marginBottom: "16px" }}>Get in Touch</h3>
+        <div className="info-grid" style={{ gridTemplateColumns: "1fr 1fr" }} suppressHydrationWarning>
+          <div className="info-card" suppressHydrationWarning>
+            <h3 className="info-title" style={{ fontSize: "16px", marginBottom: "16px" }} suppressHydrationWarning>Get in Touch</h3>
             
-            <div className="contact-item">
-              <div className="contact-icon">📍</div>
-              <div className="contact-text">
-                <div className="contact-label">Address</div>
-                <div className="contact-value">123 Premium Drive, Kampala, Uganda</div>
+            <div className="contact-item" suppressHydrationWarning>
+              <div className="contact-icon" suppressHydrationWarning>
+                <MapPin size={20} />
+              </div>
+              <div className="contact-text" suppressHydrationWarning>
+                <div className="contact-label" suppressHydrationWarning>Address</div>
+                <div className="contact-value" suppressHydrationWarning>Kampala, Uganda</div>
               </div>
             </div>
             
-            <div className="contact-item">
-              <div className="contact-icon">📞</div>
-              <div className="contact-text">
-                <div className="contact-label">Phone</div>
-                <div className="contact-value">
-                  <a href="tel:+256123456789" className="contact-link">+256 123 456 789</a>
+            <div className="contact-item" suppressHydrationWarning>
+              <div className="contact-icon" suppressHydrationWarning>
+                <Phone size={20} />
+              </div>
+              <div className="contact-text" suppressHydrationWarning>
+                <div className="contact-label" suppressHydrationWarning>Phone</div>
+                <div className="contact-value" suppressHydrationWarning>
+                  <a href="tel:+256123456789" className="contact-link" suppressHydrationWarning>+256 123 456 789</a>
                 </div>
               </div>
             </div>
             
-            <div className="contact-item">
-              <div className="contact-icon">✉️</div>
-              <div className="contact-text">
-                <div className="contact-label">Email</div>
-                <div className="contact-value">
-                  <a href="mailto:info@motors.com" className="contact-link">info@motors.com</a>
+            <div className="contact-item" suppressHydrationWarning>
+              <div className="contact-icon" suppressHydrationWarning>
+                <Mail size={20} />
+              </div>
+              <div className="contact-text" suppressHydrationWarning>
+                <div className="contact-label" suppressHydrationWarning>Email</div>
+                <div className="contact-value" suppressHydrationWarning>
+                  <a href="mailto:info@kapyaata.com" className="contact-link" suppressHydrationWarning>info@kapyaata.com</a>
                 </div>
               </div>
             </div>
             
-            <div className="contact-item">
-              <div className="contact-icon">💬</div>
-              <div className="contact-text">
-                <div className="contact-label">WhatsApp</div>
-                <div className="contact-value">
-                  <a href="https://wa.me/256123456789" target="_blank" className="contact-link">+256 123 456 789</a>
+            <div className="contact-item" suppressHydrationWarning>
+              <div className="contact-icon" suppressHydrationWarning>
+                <MessageCircle size={20} />
+              </div>
+              <div className="contact-text" suppressHydrationWarning>
+                <div className="contact-label" suppressHydrationWarning>WhatsApp</div>
+                <div className="contact-value" suppressHydrationWarning>
+                  <a href="https://wa.me/256123456789" target="_blank" className="contact-link" rel="noopener noreferrer" suppressHydrationWarning>+256 123 456 789</a>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column - Hours */}
-          <div className="info-card">
-            <h3 className="info-title" style={{ fontSize: "16px", marginBottom: "16px" }}>Business Hours</h3>
+          <div className="info-card" suppressHydrationWarning>
+            <h3 className="info-title" style={{ fontSize: "16px", marginBottom: "16px" }} suppressHydrationWarning>Business Hours</h3>
             
-            <div className="contact-item">
-              <div className="contact-text">
-                <div className="contact-label">Monday - Friday</div>
-                <div className="contact-value">9:00 AM - 8:00 PM</div>
+            <div className="contact-item" suppressHydrationWarning>
+              <div className="contact-icon" suppressHydrationWarning>
+                <Clock size={20} />
+              </div>
+              <div className="contact-text" suppressHydrationWarning>
+                <div className="contact-label" suppressHydrationWarning>Monday - Friday</div>
+                <div className="contact-value" suppressHydrationWarning>9:00 AM - 8:00 PM</div>
               </div>
             </div>
             
-            <div className="contact-item">
-              <div className="contact-text">
-                <div className="contact-label">Saturday</div>
-                <div className="contact-value">10:00 AM - 6:00 PM</div>
+            <div className="contact-item" suppressHydrationWarning>
+              <div className="contact-icon" suppressHydrationWarning>
+                <Clock size={20} />
+              </div>
+              <div className="contact-text" suppressHydrationWarning>
+                <div className="contact-label" suppressHydrationWarning>Saturday</div>
+                <div className="contact-value" suppressHydrationWarning>10:00 AM - 6:00 PM</div>
               </div>
             </div>
             
-            <div className="contact-item">
-              <div className="contact-text">
-                <div className="contact-label">Sunday</div>
-                <div className="contact-value">11:00 AM - 4:00 PM</div>
+            <div className="contact-item" suppressHydrationWarning>
+              <div className="contact-icon" suppressHydrationWarning>
+                <Clock size={20} />
+              </div>
+              <div className="contact-text" suppressHydrationWarning>
+                <div className="contact-label" suppressHydrationWarning>Sunday</div>
+                <div className="contact-value" suppressHydrationWarning>11:00 AM - 4:00 PM</div>
               </div>
             </div>
             
-            <div className="contact-item">
-              <div className="contact-text">
-                <div className="contact-label">Support</div>
-                <div className="contact-value">24/7 Online Support</div>
+            <div className="contact-item" suppressHydrationWarning>
+              <div className="contact-icon" suppressHydrationWarning>
+                <MessageCircle size={20} />
+              </div>
+              <div className="contact-text" suppressHydrationWarning>
+                <div className="contact-label" suppressHydrationWarning>Support</div>
+                <div className="contact-value" suppressHydrationWarning>24/7 Online Support</div>
               </div>
             </div>
           </div>
@@ -250,7 +346,7 @@ export default function AboutPage() {
       </div>
 
       {/* WhatsApp & Call Buttons */}
-      <div style={{ 
+      <div suppressHydrationWarning style={{ 
         display: "flex", 
         gap: "16px", 
         flexWrap: "wrap",
@@ -261,6 +357,7 @@ export default function AboutPage() {
         <a
           href="https://wa.me/256123456789"
           target="_blank"
+          rel="noopener noreferrer"
           style={{
             flex: 1,
             minWidth: "200px",
@@ -273,12 +370,17 @@ export default function AboutPage() {
             fontWeight: "600",
             textAlign: "center",
             textDecoration: "none",
-            transition: "all 0.2s ease"
+            transition: "all 0.2s ease",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px"
           }}
           onMouseEnter={(e) => e.currentTarget.style.opacity = "0.9"}
           onMouseLeave={(e) => e.currentTarget.style.opacity = "1"}
+          suppressHydrationWarning
         >
-          💬 Chat on WhatsApp
+          <MessageCircle size={20} /> Chat on WhatsApp
         </a>
         <a
           href="tel:+256123456789"
@@ -294,12 +396,17 @@ export default function AboutPage() {
             fontWeight: "600",
             textAlign: "center",
             textDecoration: "none",
-            transition: "all 0.2s ease"
+            transition: "all 0.2s ease",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px"
           }}
           onMouseEnter={(e) => e.currentTarget.style.background = "#e6c200"}
           onMouseLeave={(e) => e.currentTarget.style.background = "#ffd700"}
+          suppressHydrationWarning
         >
-          📞 Call Us Now
+          <Phone size={20} /> Call Us Now
         </a>
       </div>
     </div>

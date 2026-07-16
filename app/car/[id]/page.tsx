@@ -134,7 +134,7 @@ export default function CarDetail() {
   const hiddenFeaturesCount = (car.features?.length || 0) - 6;
 
   return (
-    <div>
+    <div suppressHydrationWarning>
       <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
@@ -178,34 +178,48 @@ export default function CarDetail() {
         .rating-select { padding: 10px; background: #111; border: 1px solid #222; border-radius: 8px; color: #ffd700; font-size: 14px; margin-bottom: 12px; }
       `}</style>
 
-      <div className="detail-container">
+      <div className="detail-container" suppressHydrationWarning>
         {/* Left Column - Images */}
-        <div>
-          <img src={car.images?.[selectedImage] || "/placeholder.jpg"} alt={`${car.brand} ${car.model}`} className="main-image" />
+        <div suppressHydrationWarning>
+          <img 
+            src={car.images?.[selectedImage] || "/placeholder.jpg"} 
+            alt={`${car.brand} ${car.model}`} 
+            className="main-image" 
+            loading="lazy"
+            suppressHydrationWarning
+          />
           {car.images && car.images.length > 0 && (
-            <div className="thumbnail-container">
+            <div className="thumbnail-container" suppressHydrationWarning>
               {displayThumbnails.map((img, idx) => (
-                <img key={idx} src={img} className="thumbnail" style={{ borderColor: selectedImage === idx ? "#ffd700" : "transparent", opacity: selectedImage === idx ? 1 : 0.6 }} onClick={() => setSelectedImage(idx)} />
+                <img 
+                  key={idx} 
+                  src={img} 
+                  className="thumbnail" 
+                  style={{ borderColor: selectedImage === idx ? "#ffd700" : "transparent", opacity: selectedImage === idx ? 1 : 0.6 }} 
+                  onClick={() => setSelectedImage(idx)} 
+                  loading="lazy"
+                  suppressHydrationWarning
+                />
               ))}
-              {!showAllImages && hiddenImagesCount > 0 && <div className="more-badge" onClick={() => setShowAllImages(true)}>+{hiddenImagesCount}</div>}
-              {showAllImages && <div className="show-less-badge" onClick={() => setShowAllImages(false)}>−</div>}
+              {!showAllImages && hiddenImagesCount > 0 && <div className="more-badge" onClick={() => setShowAllImages(true)} suppressHydrationWarning>+{hiddenImagesCount}</div>}
+              {showAllImages && <div className="show-less-badge" onClick={() => setShowAllImages(false)} suppressHydrationWarning>−</div>}
             </div>
           )}
         </div>
 
         {/* Right Column - Details */}
-        <div>
-          <div style={{ marginBottom: "16px" }}>
-            <h1 style={{ fontSize: "clamp(22px, 4vw, 28px)", fontWeight: "600", marginBottom: "4px" }}>{car.brand} {car.model}</h1>
-            <p style={{ color: "#666", fontSize: "13px" }}>{car.year}</p>
+        <div suppressHydrationWarning>
+          <div style={{ marginBottom: "16px" }} suppressHydrationWarning>
+            <h1 style={{ fontSize: "clamp(22px, 4vw, 28px)", fontWeight: "600", marginBottom: "4px" }} suppressHydrationWarning>{car.brand} {car.model}</h1>
+            <p style={{ color: "#666", fontSize: "13px" }} suppressHydrationWarning>{car.year}</p>
           </div>
 
-          <div style={{ marginBottom: "20px" }}>
-            <p className="price-primary">UGX {car.price_ugx?.toLocaleString()}</p>
-            <p style={{ color: "#888", fontSize: "13px" }}>${car.price_usd?.toLocaleString()} USD</p>
+          <div style={{ marginBottom: "20px" }} suppressHydrationWarning>
+            <p className="price-primary" suppressHydrationWarning>UGX {car.price_ugx?.toLocaleString()}</p>
+            <p style={{ color: "#888", fontSize: "13px" }} suppressHydrationWarning>${car.price_usd?.toLocaleString()} USD</p>
           </div>
 
-          <div className="specs-grid">
+          <div className="specs-grid" suppressHydrationWarning>
             <div><p style={{ color: "#666", fontSize: "10px", marginBottom: "2px" }}>Mileage</p><p style={{ fontSize: "13px", fontWeight: "500" }}>{car.mileage?.toLocaleString() || 0} mi</p></div>
             <div><p style={{ color: "#666", fontSize: "10px", marginBottom: "2px" }}>Transmission</p><p style={{ fontSize: "13px", fontWeight: "500" }}>{car.transmission}</p></div>
             <div><p style={{ color: "#666", fontSize: "10px", marginBottom: "2px" }}>Fuel Type</p><p style={{ fontSize: "13px", fontWeight: "500" }}>{car.fuel_type}</p></div>
@@ -215,57 +229,57 @@ export default function CarDetail() {
           </div>
 
           {car.description && (
-            <div style={{ marginBottom: "16px" }}>
-              <h3 style={{ fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Overview</h3>
-              <p style={{ color: "#ccc", fontSize: "12px", lineHeight: "1.5" }}>{car.description}</p>
+            <div style={{ marginBottom: "16px" }} suppressHydrationWarning>
+              <h3 style={{ fontSize: "14px", fontWeight: "600", marginBottom: "8px" }} suppressHydrationWarning>Overview</h3>
+              <p style={{ color: "#ccc", fontSize: "12px", lineHeight: "1.5" }} suppressHydrationWarning>{car.description}</p>
             </div>
           )}
 
           {car.features && car.features.length > 0 && car.features[0] !== "" && (
-            <div>
-              <h3 style={{ fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Key Features</h3>
-              <div className="features-list">
-                {displayFeatures.map((feature, idx) => <span key={idx} className="feature-tag">{feature}</span>)}
+            <div suppressHydrationWarning>
+              <h3 style={{ fontSize: "14px", fontWeight: "600", marginBottom: "8px" }} suppressHydrationWarning>Key Features</h3>
+              <div className="features-list" suppressHydrationWarning>
+                {displayFeatures.map((feature, idx) => <span key={idx} className="feature-tag" suppressHydrationWarning>{feature}</span>)}
               </div>
-              {!showAllFeatures && hiddenFeaturesCount > 0 && <button className="show-more-features" onClick={() => setShowAllFeatures(true)}>+ Show {hiddenFeaturesCount} more</button>}
-              {showAllFeatures && <button className="show-more-features" onClick={() => setShowAllFeatures(false)}>− Show less</button>}
+              {!showAllFeatures && hiddenFeaturesCount > 0 && <button className="show-more-features" onClick={() => setShowAllFeatures(true)} suppressHydrationWarning>+ Show {hiddenFeaturesCount} more</button>}
+              {showAllFeatures && <button className="show-more-features" onClick={() => setShowAllFeatures(false)} suppressHydrationWarning>− Show less</button>}
             </div>
           )}
 
           {car.video_url && (
-            <div style={{ marginBottom: "20px" }}>
-              <h3 style={{ fontSize: "14px", fontWeight: "600", marginBottom: "8px" }}>Video Walkthrough</h3>
-              <video src={car.video_url} controls style={{ width: "100%", borderRadius: "12px" }} />
+            <div style={{ marginBottom: "20px" }} suppressHydrationWarning>
+              <h3 style={{ fontSize: "14px", fontWeight: "600", marginBottom: "8px" }} suppressHydrationWarning>Video Walkthrough</h3>
+              <video src={car.video_url} controls style={{ width: "100%", borderRadius: "12px" }} suppressHydrationWarning />
             </div>
           )}
 
           {/* Action Buttons */}
-          <div className="action-buttons">
+          <div className="action-buttons" suppressHydrationWarning>
             {car.status === "Sold" ? (
-              <button className="btn-disabled">SOLD OUT</button>
+              <button className="btn-disabled" suppressHydrationWarning>SOLD OUT</button>
             ) : (
-              <button className="btn-primary" onClick={openWhatsApp}>💬 INQUIRE ON WhatsApp</button>
+              <button className="btn-primary" onClick={openWhatsApp} suppressHydrationWarning>💬 INQUIRE ON WhatsApp</button>
             )}
-            <button className="btn-secondary" onClick={() => setShowReviewForm(!showReviewForm)}>⭐ WRITE REVIEW</button>
+            <button className="btn-secondary" onClick={() => setShowReviewForm(!showReviewForm)} suppressHydrationWarning>⭐ WRITE REVIEW</button>
           </div>
 
           {/* Review Form */}
           {showReviewForm && (
-            <div className="review-form">
-              <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "16px" }}>Share Your Experience</h3>
+            <div className="review-form" suppressHydrationWarning>
+              <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "16px" }} suppressHydrationWarning>Share Your Experience</h3>
               <form onSubmit={submitReview}>
-                <input type="text" placeholder="Your Name *" value={reviewForm.name} onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})} className="review-input" required />
-                <select value={reviewForm.rating} onChange={(e) => setReviewForm({...reviewForm, rating: parseInt(e.target.value)})} className="rating-select">
+                <input type="text" placeholder="Your Name *" value={reviewForm.name} onChange={(e) => setReviewForm({...reviewForm, name: e.target.value})} className="review-input" required suppressHydrationWarning />
+                <select value={reviewForm.rating} onChange={(e) => setReviewForm({...reviewForm, rating: parseInt(e.target.value)})} className="rating-select" suppressHydrationWarning>
                   <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
                   <option value="4">⭐⭐⭐⭐ - Very Good</option>
                   <option value="3">⭐⭐⭐ - Good</option>
                   <option value="2">⭐⭐ - Fair</option>
                   <option value="1">⭐ - Poor</option>
                 </select>
-                <textarea rows={3} placeholder="Your Review *" value={reviewForm.comment} onChange={(e) => setReviewForm({...reviewForm, comment: e.target.value})} className="review-input" required />
-                <div style={{ display: "flex", gap: "12px" }}>
-                  <button type="submit" disabled={submitting} style={{ padding: "10px 20px", background: "#ffd700", border: "none", borderRadius: "8px", color: "#000", fontWeight: "600", cursor: "pointer" }}>{submitting ? "Submitting..." : "Submit Review"}</button>
-                  <button type="button" onClick={() => setShowReviewForm(false)} style={{ padding: "10px 20px", background: "transparent", border: "1px solid #333", borderRadius: "8px", color: "#888", cursor: "pointer" }}>Cancel</button>
+                <textarea rows={3} placeholder="Your Review *" value={reviewForm.comment} onChange={(e) => setReviewForm({...reviewForm, comment: e.target.value})} className="review-input" required suppressHydrationWarning />
+                <div style={{ display: "flex", gap: "12px" }} suppressHydrationWarning>
+                  <button type="submit" disabled={submitting} style={{ padding: "10px 20px", background: "#ffd700", border: "none", borderRadius: "8px", color: "#000", fontWeight: "600", cursor: "pointer" }} suppressHydrationWarning>{submitting ? "Submitting..." : "Submit Review"}</button>
+                  <button type="button" onClick={() => setShowReviewForm(false)} style={{ padding: "10px 20px", background: "transparent", border: "1px solid #333", borderRadius: "8px", color: "#888", cursor: "pointer" }} suppressHydrationWarning>Cancel</button>
                 </div>
               </form>
             </div>
@@ -273,16 +287,16 @@ export default function CarDetail() {
 
           {/* Reviews Section */}
           {reviews.length > 0 && (
-            <div style={{ marginTop: "24px" }}>
-              <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "16px" }}>Customer Reviews ({reviews.length})</h3>
+            <div style={{ marginTop: "24px" }} suppressHydrationWarning>
+              <h3 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "16px" }} suppressHydrationWarning>Customer Reviews ({reviews.length})</h3>
               {reviews.map((review) => (
-                <div key={review.id} className="review-card">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                    <span style={{ fontWeight: "600" }}>{review.customer_name}</span>
-                    <div className="stars">{"⭐".repeat(review.rating)}</div>
+                <div key={review.id} className="review-card" suppressHydrationWarning>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }} suppressHydrationWarning>
+                    <span style={{ fontWeight: "600" }} suppressHydrationWarning>{review.customer_name}</span>
+                    <div className="stars" suppressHydrationWarning>{"⭐".repeat(review.rating)}</div>
                   </div>
-                  <p style={{ color: "#ccc", fontSize: "13px", lineHeight: "1.5" }}>{review.comment}</p>
-                  <p style={{ color: "#666", fontSize: "10px", marginTop: "8px" }}>{new Date(review.created_at).toLocaleDateString()}</p>
+                  <p style={{ color: "#ccc", fontSize: "13px", lineHeight: "1.5" }} suppressHydrationWarning>{review.comment}</p>
+                  <p style={{ color: "#666", fontSize: "10px", marginTop: "8px" }} suppressHydrationWarning>{new Date(review.created_at).toLocaleDateString()}</p>
                 </div>
               ))}
             </div>
